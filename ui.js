@@ -2,6 +2,7 @@
 const p5ui = (g) => {
 
 	let intro = true;
+	let borrar = false;
 	let dejavu;
 
 	g.preload = () => {
@@ -24,6 +25,13 @@ const p5ui = (g) => {
 
 	g.draw = () => {
 
+		if (borrar) {
+			borrar = false;
+			g.background(1, 1);
+			g.clear();
+			setTimeout(() => g.clear(), 1);
+		}
+
 		if (intro) {
 			g.fill(0);
 			g.text(
@@ -33,6 +41,7 @@ const p5ui = (g) => {
 			);
 			return;
 		}
+
 		if (g.mouseIsPressed) {
 
 			g.frameRate(30);
@@ -57,14 +66,15 @@ const p5ui = (g) => {
 	g.mousePressed = () => {
 		if (intro) {
 			intro = false;
-			g.clear();
-			setTimeout(() => g.clear(), 1);
+			borrar = true;
 		}
 	}
 
 	g.mouseReleased = () => {
-		g.clear();
-		setTimeout(() => g.clear(), 1);
+		if (intro) {
+			intro = false;
+		}
+		borrar = true;
 	}
 
 	g.windowResized = () => {
