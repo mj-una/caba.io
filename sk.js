@@ -1,5 +1,10 @@
+// caba.io
+// v0.2
+
 const memo = [[], []]; // qaby, paty
 const fondo = document.querySelectorAll(".dd");
+
+let enDraw = false; // flag evitar apilamiento
 
 function preload() {
   
@@ -21,14 +26,24 @@ function setup() {
 
 function draw() {  
   
+  if (enDraw) return; // salida temprana
+  enDraw = true; // activar flag
+
+  // imagen actual
   let imgs;
-  let rb = random(40, 60); // limite brillo
-  
-  if (mouseIsPressed) imgs = memo[1];
-  else imgs = memo[0];
+  if (mouseIsPressed) {
+    imgs = memo[1];
+    if (isLooping()) noLoop();
+  }
+  else {
+    imgs = memo[0];
+    if (!isLooping()) loop();
+  }
 
   background(255);
-  
+  let rb = random(40, 60); // brillo minimo
+
+  // 5 x 6 x 5 = 150 vueltas
   for (let x = 0; x < 500; x+= 100) { // filas
     for (let y = 0; y < 600; y += 100) { // columnas
       for (let i = 0; i < imgs.length; i++) { // capas
@@ -36,11 +51,11 @@ function draw() {
         tint(
           random(-10, 160), // tono
           random(90, 100), // saturacion
-          random(rb, 100) // brillo
+          random(rb, 100) // brillo (rango variable)
         );
         
         image(
-          imgs[i], // src
+          imgs[i], // fuente (src)
           x, y, 100, 100, // pos y tam en canvas
           x, y, 100, 100 // pos y tam dentro de src
         );
@@ -48,10 +63,10 @@ function draw() {
     }
   }
 
-  const hh = random(6, 360);
-  const ss = random(90, 100);
-  const ll = random(56, 66);
-
+  // fondo
+  const hh = random(6, 360); // tono
+  const ss = random(90, 100); // saturacion
+  const ll = random(56, 66); // brillo
   const f = (p, m) => `repeating-linear-gradient(
     ${((frameCount % 36) * (p ? 10 : -10))}deg,
     hsl(${m ? 20 : 260}, 80%, 60%) 0rem,
@@ -61,7 +76,10 @@ function draw() {
 
   for (i = 0; i < 4; i++) {
     fondo[i].style.background = f(i % 2 == 0, i >= 2);
-  } 
+  }
+
+  // desactivar flag
+  enDraw = false;
 }
 
 let evitarClickS = false;
@@ -79,7 +97,7 @@ function touchStarted() {
 
   // actualizar ahora
   // (no espera 3fps)
-  draw();
+  requestAnimationFrame(() => redraw());
 }
 
 let evitarClickE = false;
@@ -94,10 +112,6 @@ function touchEnded() {
 
   // reanudar
   loop();
-
-  // actualizar ahora
-  // (no espera 3fps)
-  draw();
 }
 
 // responsive ! ! copiar y pegar ! !
