@@ -32,35 +32,25 @@ const p5ui = (g) => {
 			setTimeout(() => g.clear(), 1);
 		}
 
-		if (intro) {
-			g.fill(0);
-			g.text(
-				"presiona",
-				g.width * 0.5,
-				g.height * 0.9
-			);
-			return;
-		}
+		// if (g.mouseIsPressed) {
 
-		if (g.mouseIsPressed) {
-
-			g.frameRate(30);
-			g.fill(0);
-			g.text(
-				"caba.io",
-				g.random(g.width),
-				g.random(g.height)
-			);
-		}
-		else {
-			g.frameRate(3);
-			g.noFill();
-			g.text(
-				"caba.io",
-				g.random(g.width),
-				g.random(g.height)
-			);
-		}
+		// 	g.frameRate(30);
+		// 	g.fill(0);
+		// 	g.text(
+		// 		"caba.io",
+		// 		g.random(g.width),
+		// 		g.random(g.height)
+		// 	);
+		// }
+		// else {
+		// 	g.frameRate(3);
+		// 	g.noFill();
+		// 	g.text(
+		// 		"caba.io",
+		// 		g.random(g.width),
+		// 		g.random(g.height)
+		// 	);
+		// }
 	}
 
 	g.mousePressed = () => {

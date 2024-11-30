@@ -14,9 +14,9 @@ function setup() {
   createCanvas(500, 600)
     .parent("sk")
     .id("cnvSk");
-    frameRate(3);
   windowResized(); // (*)
   colorMode(HSB, 100, 100, 100);
+  frameRate(3);
 }
 
 function draw() {  
@@ -24,15 +24,9 @@ function draw() {
   let imgs;
   let rb = random(40, 60); // limite brillo
   
-  if (mouseIsPressed) {
-    imgs = memo[1];
-    frameRate(30);
-  }
-  else {
-    imgs = memo[0];
-    frameRate(3);
-  }
-  
+  if (mouseIsPressed) imgs = memo[1];
+  else imgs = memo[0];
+
   background(255);
   
   for (let x = 0; x < 500; x+= 100) { // filas
@@ -58,16 +52,52 @@ function draw() {
   const ss = random(90, 100);
   const ll = random(56, 66);
 
-  const f = (p) => `repeating-linear-gradient(
+  const f = (p, m) => `repeating-linear-gradient(
     ${((frameCount % 36) * (p ? 10 : -10))}deg,
-    hsl(20, 80%, 60%) 0rem,
+    hsl(${m ? 20 : 260}, 80%, 60%) 0rem,
     hsl(${hh}, ${ss}%, ${ll}%) 1rem,
-    hsl(260, 80%, 60%) 2rem
+    hsl(${m ? 260 : 20}, 80%, 60%) 2rem
   )`;
 
   for (i = 0; i < 4; i++) {
-    fondo[i].style.background = f(i % 2 == 0);
+    fondo[i].style.background = f(i % 2 == 0, i >= 2);
   } 
+}
+
+let evitarClickS = false;
+function touchStarted() {
+
+  // prevenir doble accion
+  if (evitarClickS) return;
+  evitarClickS = true;
+  setTimeout(function() {
+    evitarClickS = false;
+  }, 110);
+
+  // pausa
+  noLoop();
+
+  // actualizar ahora
+  // (no espera 3fps)
+  draw();
+}
+
+let evitarClickE = false;
+function touchEnded() {
+
+  // prevenir doble accion
+  if (evitarClickE) return;
+  evitarClickE = true;
+  setTimeout(function() {
+    evitarClickE = false;
+  }, 110);
+
+  // reanudar
+  loop();
+
+  // actualizar ahora
+  // (no espera 3fps)
+  draw();
 }
 
 // responsive ! ! copiar y pegar ! !
