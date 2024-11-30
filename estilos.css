@@ -15,7 +15,12 @@ html, body {
 	width: 100svw;
 	height: 100vh;
 	height: 100svh;
-	font-family: tmr, monospace;
+	font-family: tmr, 'Times New Roman', serif;
+	font-weight: normal;
+}
+
+h1 {
+	font-weight: normal;
 }
 
 canvas {
